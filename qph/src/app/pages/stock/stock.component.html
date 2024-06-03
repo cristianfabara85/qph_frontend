@@ -1,0 +1,23 @@
+<div class="card">
+    <p-messages [(value)]="msgs"></p-messages>
+
+    <p-table [columns]="cols" [value]="listStock"  [paginator]="true" [rows]="15">
+    <ng-template pTemplate="caption">
+        Lista de Stock
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>

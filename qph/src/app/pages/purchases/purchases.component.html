@@ -1,0 +1,73 @@
+<div class="card">
+    <p-messages [(value)]="msgs"></p-messages>
+    <p-table [columns]="cols" [value]="listPurchase"  [paginator]="true" [rows]="15">
+    <ng-template pTemplate="caption">
+        Adquisiciones
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+        <div style="text-align:left">
+            <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Nueva Adquisición"></button>
+        </div>
+    </ng-template>
+</p-table>
+</div>
+
+
+<p-dialog id="dialog "header="Datos de Venta" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade"
+    [modal]="true" [style]="{width: '300px'}">
+    <div class="p-grid ui-fluid" *ngIf="purchase">
+        <div class="p-col-4">
+            <label for="vin">Código Producto: </label>
+        </div>
+        <div class="p-col-8">
+            <p-dropdown id="code" [options]="listProducts" [(ngModel)]="selectProduct" placeholder="Seleccione"
+                appendTo="body" required></p-dropdown>
+        </div>
+        <div class="p-col-4">
+            <label for="year">Proveedor: </label>
+        </div>
+        <div class="p-col-8">
+            <p-dropdown id="code" [options]="listProviders" [(ngModel)]="selectProvider" placeholder="Seleccione"
+                appendTo="body" required></p-dropdown>
+        </div>
+        <div class="p-col-4">
+            <label for="brand">Cantidad: </label>
+        </div>
+        <div class="p-col-8">
+            <input pInputText id="quantity" [(ngModel)]="purchase.cantidad" required />
+        </div>
+        <div class="p-col-4">
+            <label for="brand">Precio unitario: </label>
+        </div>
+        <div class="p-col-8">
+            <input pInputText id="precioUnitario" [(ngModel)]="purchase.precioUnitario" required />
+        </div>
+        <div class="p-col-4">
+            <label for="brand">Total: </label>
+        </div>
+        <div class="p-col-8">
+            <label id="precioTotal">{{this.purchase.cantidad * this.purchase.precioUnitario}}</label>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar"></button>
+        </div>
+    </p-footer>
+</p-dialog>

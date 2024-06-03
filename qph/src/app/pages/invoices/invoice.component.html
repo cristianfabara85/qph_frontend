@@ -1,0 +1,82 @@
+<div class="card">
+    <h2>Nueva Factura</h2>
+    <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+        <div class="form-group row">
+
+            <label style="padding-right: 15px; font-weight: bold;" for="client">Cliente:</label>
+            <select style="padding-right: 30px;"  id="client" formControlName="clientId" class="form-control" (change)="onClientChange()">
+              <option *ngFor="let client of listClients" [value]="client.value.catalogoId">
+                {{ client.value.nombre }}
+              </option>
+            </select>
+            <label *ngIf="invoiceForm.get('documentId').value" style="padding-right: 15px; padding-left: 15px; font-weight: bold;" for="document">Cédula/Ruc: </label>
+            <label  style="padding-right: 15px;" for="documentText">{{ invoiceForm.get('documentId').value  }}</label>
+            <label style="padding-right: 15px; padding-left: 15px; font-weight: bold;" for="invoiceDate">Fecha: </label>
+            <label style="padding-right: 15px;" for="invoiceDateText">{{ invoiceForm.get('invoiceDate').value | date: 'yyyy/MM/dd' }}</label>
+            <label style="padding-right: 15px; font-weight: bold;" for="total">Total Factura</label>
+            <input style="padding-right: 15px;" id="total" type="number" formControlName="total" class="form-control" disabled>
+
+        </div>
+        <hr>
+      <table class="table" >
+        <thead *ngIf="items.length>0">
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+            <th>Iva</th>
+            <th>Total</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="items">
+          <tr *ngFor="let item of items.controls; let i=index" [formGroupName]="i">
+            <td>
+              <select id="product" formControlName="product" class="form-control" (change)="onProductChange(i)">
+                <option *ngFor="let product of listProducts" [value]="product.value.codigo">
+                  {{ product.value.nombre }}
+                </option>
+              </select>
+            </td>
+  
+            <td>
+              <input id="quantity" type="number" formControlName="quantity" class="form-control" (input)="calculateTotal(i)">
+            </td>
+  
+            <td>
+              <input id="price" type="number" formControlName="price" class="form-control" disabled>
+            </td>
+  
+            <td>
+              <input id="subtotal" type="number" formControlName="subtotal" class="form-control" disabled>
+            </td>
+  
+            <td>
+              <input id="tax" type="number" formControlName="tax" class="form-control" disabled>
+            </td>
+  
+            <td>
+              <input id="total" type="number" formControlName="total" class="form-control" disabled>
+            </td>
+  
+            <td>
+              <button type="button" class="btn btn-danger" (click)="removeItem(i)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <br>
+      <div class="row">
+        <button type="button" style="width: 200px; margin-right: 15px;" pButton (click)="addItem()">Agregar Producto</button>
+        <button type="submit" style="width: 200px; margin-left: 15px; " pButton [disabled]="!invoiceForm.valid || items.length===0 ">Guardar Factura</button>
+      </div>
+
+    </form>
+
+
+  </div>
+
+
+ 

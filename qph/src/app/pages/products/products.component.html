@@ -1,0 +1,62 @@
+<div class="card">
+    <p-table [columns]="cols" [value]="listProducts"  [paginator]="true" [rows]="15">
+    <ng-template pTemplate="caption">
+        Lista de Productos
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th style="width: 100px;"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="onRowSelect(rowData)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+        <div style="text-align:left">
+            <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add"></button>
+        </div>
+    </ng-template>
+</p-table>
+</div>
+
+
+<p-dialog header="Datos Usuario" [(visible)]="displayDialog" [focusOnShow]="false" 
+            [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}">
+    <div class="p-grid ui-fluid" *ngIf="product">
+        <div class="p-col-4">
+            <label for="vin">Código: </label>
+        </div>
+        <div class="p-col-8">
+            <input pInputText id="code" [(ngModel)]="product.codigo" autofocus />
+        </div>
+        <div class="p-col-4">
+            <label for="year">Nombre: </label>
+        </div>
+        <div class="p-col-8">
+            <input pInputText id="name" [(ngModel)]="product.nombre" />
+        </div>
+        <div class="p-col-4">
+            <label for="brand">Precio Unitario: </label>
+        </div>
+        <div class="p-col-8">
+            <input pInputText id="unitPrice" [(ngModel)]="product.precioUnidad" />
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>
